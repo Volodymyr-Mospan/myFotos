@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import IconButton from "../../components/IconButton/IconButton";
 
 const initialState = {
   login: "",
@@ -24,8 +25,14 @@ export const RegistrationScren = () => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <Image />
+      <View style={styles.avatarContainer}>
+        <Image style={styles.avatar} />
+        <IconButton style={styles.iconButton}>
+          <Image
+            style={styles.icon}
+            source={require("../../assets/icon/addAvatarPhoto.png")}
+          />
+        </IconButton>
       </View>
 
       <Text style={styles.title}>Registration</Text>
@@ -103,6 +110,7 @@ export const RegistrationScren = () => {
 
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
     width: "100%",
     paddingLeft: 16,
     paddingRight: 16,
@@ -111,17 +119,46 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
 
-    fontFamily: "Roboto",
-    fontWeight: 500,
-
     backgroundColor: "#ffffff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
 
+  avatarContainer: {
+    position: "absolute",
+    top: -60,
+    width: 120,
+    height: 120,
+
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+  },
+  avatar: {},
+  iconButton: {
+    position: "absolute",
+    bottom: 14,
+    right: -12,
+
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 25,
+    height: 25,
+
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#FF6C00",
+    borderRadius: 25 / 2,
+  },
+  icon: {
+    width: 13,
+    height: 13,
+  },
+
   title: {
     paddingBottom: 33,
 
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
     lineHeight: 35.16,
     letterSpacing: 0.01,
@@ -131,7 +168,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-end",
   },
-
   input: {
     height: 50,
     padding: 16,
@@ -142,6 +178,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
 
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -152,7 +189,7 @@ const styles = StyleSheet.create({
     top: 16,
   },
   showButtonText: {
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
 
@@ -170,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   formButtonText: {
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
 
@@ -181,7 +218,7 @@ const styles = StyleSheet.create({
     marginBottom: 78,
   },
   changeFormButtonText: {
-    fontWeight: 400,
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
 
