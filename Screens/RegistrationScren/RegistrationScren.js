@@ -6,6 +6,10 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import IconButton from "../../components/IconButton/IconButton";
 
@@ -15,12 +19,17 @@ const initialState = {
   password: "",
 };
 
-export const RegistrationScren = () => {
+export const RegistrationScren = ({ isShowKeyboard, keyboardHide }) => {
   const [credentials, setСredentials] = useState(initialState);
-  const [isPasswordHidden, setIsPasswordHidden] = useState("true");
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const showPasswordToggle = () => {
     setIsPasswordHidden((prevState) => !prevState);
+  };
+
+  const handleSubmit = () => {
+    keyboardHide();
+    console.log(credentials);
   };
 
   return (
@@ -37,73 +46,92 @@ export const RegistrationScren = () => {
 
       <Text style={styles.title}>Registration</Text>
 
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          autoComplete="username"
-          placeholder="Login"
-          value={credentials.login}
-          onChangeText={(value) =>
-            setСredentials((prevState) => ({ ...prevState, login: value }))
-          }
-        />
-        <TextInput
-          style={styles.input}
-          autoComplete="email"
-          placeholder="Email adress"
-          value={credentials.email}
-          onChangeText={(value) =>
-            setСredentials((prevState) => ({ ...prevState, email: value }))
-          }
-        />
-        <View
-          style={{
-            marginBottom: 43,
-            position: "relative",
-          }}
-        >
-          <TextInput
-            style={{
-              ...styles.input,
-              marginBottom: 0,
-            }}
-            autoComplete="new-password"
-            placeholder="Password"
-            secureTextEntry={!!isPasswordHidden}
-            value={credentials.password}
-            onChangeText={(value) =>
-              setСredentials((prevState) => ({ ...prevState, password: value }))
-            }
-          />
-          <TouchableOpacity
-            activeOpacity={0.2}
-            style={styles.showButton}
-            onPress={showPasswordToggle}
+      <ScrollView style={{ width: "100%" }}>
+        <View style={styles.form}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "padding"}
+            style={styles.form}
           >
-            <Text style={styles.showButtonText}>
-              {isPasswordHidden ? "Show" : "Hide"}
-            </Text>
+            <TextInput
+              style={styles.input}
+              autoComplete="username"
+              placeholder="Login"
+              textContentType="nickname"
+              value={credentials.login}
+              onChangeText={(value) =>
+                setСredentials((prevState) => ({ ...prevState, login: value }))
+              }
+            />
+            <TextInput
+              style={styles.input}
+              autoComplete="email"
+              placeholder="Email address"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+              value={credentials.email}
+              onChangeText={(value) =>
+                setСredentials((prevState) => ({ ...prevState, email: value }))
+              }
+            />
+            <View
+              style={{
+                marginBottom: 36,
+                position: "relative",
+              }}
+            >
+              <TextInput
+                style={{
+                  ...styles.input,
+                  marginBottom: 0,
+                }}
+                autoComplete="new-password"
+                placeholder="Password"
+                textContentType="password"
+                secureTextEntry={!!isPasswordHidden}
+                value={credentials.password}
+                onChangeText={(value) =>
+                  setСredentials((prevState) => ({
+                    ...prevState,
+                    password: value,
+                  }))
+                }
+              />
+
+              <TouchableOpacity
+                activeOpacity={0.2}
+                style={styles.showButton}
+                onPress={showPasswordToggle}
+              >
+                <Text style={styles.showButtonText}>
+                  {isPasswordHidden ? "Show" : "Hide"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+
+          {/* {!isShowKeyboard && ( */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.formButton}
+            onPress={handleSubmit}
+          >
+            <Text style={styles.formButtonText}>Register</Text>
           </TouchableOpacity>
+          {/* )} */}
         </View>
 
+        {/* {!isShowKeyboard && ( */}
         <TouchableOpacity
           activeOpacity={0.8}
-          style={styles.formButton}
+          style={styles.changeFormButton}
           onPress={showPasswordToggle}
         >
-          <Text style={styles.formButtonText}>Register</Text>
+          <Text style={styles.changeFormButtonText}>
+            Already have an account? To come in
+          </Text>
         </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={styles.changeFormButton}
-        onPress={showPasswordToggle}
-      >
-        <Text style={styles.changeFormButtonText}>
-          Already have an account? To come in
-        </Text>
-      </TouchableOpacity>
+        {/* )} */}
+      </ScrollView>
     </View>
   );
 };
@@ -112,10 +140,11 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     width: "100%",
+
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 92,
-
+    marginTop: 60,
     justifyContent: "flex-end",
     alignItems: "center",
 
@@ -156,7 +185,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    paddingBottom: 33,
+    paddingBottom: 32,
 
     fontFamily: "Roboto-Medium",
     fontSize: 30,
@@ -170,8 +199,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    padding: 16,
+    paddingHorizontal: 16,
     marginBottom: 16,
+
+    // textAlign: "center",
+    verticalAlign: "middle",
 
     backgroundColor: "#F6F6F6",
     borderColor: "#E8E8E8",
@@ -221,6 +253,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
+    textAlign: "center",
 
     color: "#1B4371",
   },

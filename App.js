@@ -1,6 +1,12 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard,
+} from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { RegistrationScren } from "./Screens/RegistrationScren/RegistrationScren";
@@ -17,6 +23,21 @@ export default function App() {
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
     "Alkatra-Bold": require("./assets/fonts/Alkatra-Bold.ttf"),
   });
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsShowKeyboard(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsShowKeyboard(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -28,21 +49,28 @@ export default function App() {
     return null;
   }
 
-  return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <ImageBackground
-        style={styles.bgImage}
-        resizeMode="cover"
-        // src={require(image1)}
-        // srcSet={"./assets/img/photo_bg.jpg 1x, ./assets/img/photo_bg2x.jpg 2x"}
-        // srcSet={`${image1} 1x, ${image2} 2x, ${image3} 3x`}
-        source={(image1, image2, image3)}
-      >
-        <RegistrationScren />
-      </ImageBackground>
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
 
-      <StatusBar style="auto" />
-    </View>
+  return (
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <ImageBackground
+          style={styles.bgImage}
+          resizeMode="cover"
+          source={(image1, image2, image3)}
+        >
+          <RegistrationScren
+            isShowKeyboard={isShowKeyboard}
+            keyboardHide={keyboardHide}
+          />
+        </ImageBackground>
+
+        <StatusBar style="auto" />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -50,7 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     fontFamily: "Roboto-Bold",
-    // fontWeight: 500,
   },
   bgImage: {
     flex: 1,
