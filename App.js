@@ -10,6 +10,7 @@ import {
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { RegistrationScren } from "./Screens/RegistrationScren/RegistrationScren";
+import { LoginScreen } from "./Screens/LoginScreen/LoginScreen";
 import image1 from "./assets/img/photo_bg.jpg";
 import image2 from "./assets/img/photo_bg2x.jpg";
 import image3 from "./assets/img/photo_bg3x.jpg";
@@ -62,10 +63,8 @@ export default function App() {
           resizeMode="cover"
           source={(image1, image2, image3)}
         >
-          <RegistrationScren
-            isShowKeyboard={isShowKeyboard}
-            keyboardHide={keyboardHide}
-          />
+          <RegistrationScren keyboardHide={keyboardHide} />
+          {/* <LoginScreen keyboardHide={keyboardHide} /> */}
         </ImageBackground>
 
         <StatusBar style="auto" />

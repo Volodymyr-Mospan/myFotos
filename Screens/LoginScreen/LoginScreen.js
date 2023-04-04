@@ -13,12 +13,11 @@ import {
 import IconButton from "../../components/IconButton/IconButton";
 
 const initialState = {
-  login: "",
   email: "",
   password: "",
 };
 
-export const RegistrationScren = ({ keyboardHide }) => {
+export const LoginScreen = ({ keyboardHide }) => {
   const [credentials, setСredentials] = useState(initialState);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -34,17 +33,7 @@ export const RegistrationScren = ({ keyboardHide }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image style={styles.avatar} />
-        <IconButton style={styles.iconButton}>
-          <Image
-            style={styles.icon}
-            source={require("../../assets/icon/addAvatarPhoto.png")}
-          />
-        </IconButton>
-      </View>
-
-      <Text style={styles.title}>Registration</Text>
+      <Text style={styles.title}>Sign in</Text>
 
       <ScrollView style={{ width: "100%" }}>
         <View style={styles.form}>
@@ -52,16 +41,6 @@ export const RegistrationScren = ({ keyboardHide }) => {
             behavior={Platform.OS === "ios" ? "padding" : "padding"}
             style={styles.form}
           >
-            <TextInput
-              style={styles.input}
-              autoComplete="username"
-              placeholder="Login"
-              textContentType="nickname"
-              value={credentials.login}
-              onChangeText={(value) =>
-                setСredentials((prevState) => ({ ...prevState, login: value }))
-              }
-            />
             <TextInput
               style={styles.input}
               autoComplete="email"
@@ -115,7 +94,7 @@ export const RegistrationScren = ({ keyboardHide }) => {
             style={styles.formButton}
             onPress={handleSubmit}
           >
-            <Text style={styles.formButtonText}>Register</Text>
+            <Text style={styles.formButtonText}>LogIn</Text>
           </TouchableOpacity>
           {/* )} */}
         </View>
@@ -127,7 +106,7 @@ export const RegistrationScren = ({ keyboardHide }) => {
           onPress={showPasswordToggle}
         >
           <Text style={styles.changeFormButtonText}>
-            Already have an account? To come in
+            Don't have an account? Register
           </Text>
         </TouchableOpacity>
         {/* )} */}
@@ -143,7 +122,7 @@ const styles = StyleSheet.create({
 
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: 92,
+    paddingTop: 32,
     marginTop: 60,
     justifyContent: "flex-end",
     alignItems: "center",
@@ -151,37 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-  },
-
-  avatarContainer: {
-    position: "absolute",
-    top: -60,
-    width: 120,
-    height: 120,
-
-    backgroundColor: "#F6F6F6",
-    borderRadius: 16,
-  },
-  avatar: {},
-  iconButton: {
-    position: "absolute",
-    bottom: 14,
-    right: -12,
-
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 25,
-    height: 25,
-
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderColor: "#FF6C00",
-    borderRadius: 25 / 2,
-  },
-  icon: {
-    width: 13,
-    height: 13,
   },
 
   title: {
