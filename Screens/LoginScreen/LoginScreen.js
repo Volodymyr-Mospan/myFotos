@@ -63,7 +63,6 @@ export const LoginScreen = ({ keyboardHide }) => {
                   ...styles.input,
                   marginBottom: 0,
                 }}
-                autoComplete="new-password"
                 placeholder="Password"
                 textContentType="password"
                 secureTextEntry={!!isPasswordHidden}

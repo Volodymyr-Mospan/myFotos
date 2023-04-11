@@ -84,7 +84,6 @@ export const RegistrationScren = ({ keyboardHide }) => {
                   ...styles.input,
                   marginBottom: 0,
                 }}
-                autoComplete="new-password"
                 placeholder="Password"
                 textContentType="password"
                 secureTextEntry={!!isPasswordHidden}
