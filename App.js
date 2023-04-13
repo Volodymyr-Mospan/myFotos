@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
-  ImageBackground,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -9,13 +8,20 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { RegistrationScren } from "./Screens/RegistrationScren/RegistrationScren";
-import { LoginScreen } from "./Screens/LoginScreen/LoginScreen";
-import image1 from "./assets/img/photo_bg.jpg";
-import image2 from "./assets/img/photo_bg2x.jpg";
-import image3 from "./assets/img/photo_bg3x.jpg";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { RegistrationScren } from "./Screens/auth/RegistrationScren";
+import { LoginScreen } from "./Screens/auth/LoginScreen";
+import { PostsScreen } from "./Screens/mainScreen/PostsScreen";
+import { CreatePostsScreen } from "./Screens/mainScreen/CreatePostsScreen";
+import { ProfileScreen } from "./Screens/mainScreen/ProfileScreen";
 
 SplashScreen.preventAutoHideAsync();
+
+const AuthStack = createNativeStackNavigator();
+const MainTab = createBottomTabNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,6 +31,7 @@ export default function App() {
     "Alkatra-Bold": require("./assets/fonts/Alkatra-Bold.ttf"),
   });
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
@@ -56,20 +63,48 @@ export default function App() {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
-        <ImageBackground
-          style={styles.bgImage}
-          resizeMode="cover"
-          source={(image1, image2, image3)}
-        >
-          <RegistrationScren keyboardHide={keyboardHide} />
-          {/* <LoginScreen keyboardHide={keyboardHide} /> */}
-        </ImageBackground>
-
-        <StatusBar style="auto" />
-      </View>
-    </TouchableWithoutFeedback>
+    <NavigationContainer>
+      <TouchableWithoutFeedback onPress={keyboardHide}>
+        <View style={styles.container} onLayout={onLayoutRootView}>
+          {isAuth ? (
+            <MainTab.Navigator>
+              <MainTab.Screen
+                options={{ headerShown: false }}
+                name="Posts"
+                component={PostsScreen}
+              />
+              <MainTab.Screen
+                options={{ headerShown: false }}
+                name="CreatePosts"
+                component={CreatePostsScreen}
+              />
+              <MainTab.Screen
+                options={{ headerShown: false }}
+                name="Profile"
+                component={ProfileScreen}
+              />
+            </MainTab.Navigator>
+          ) : (
+            <AuthStack.Navigator initialRouteName={"Registration"}>
+              <AuthStack.Screen
+                options={{ headerShown: false }}
+                name="Registration"
+              >
+                {(props) => (
+                  <RegistrationScren {...props} keyboardHide={keyboardHide} />
+                )}
+              </AuthStack.Screen>
+              <AuthStack.Screen options={{ headerShown: false }} name="Login">
+                {(props) => (
+                  <LoginScreen {...props} keyboardHide={keyboardHide} />
+                )}
+              </AuthStack.Screen>
+            </AuthStack.Navigator>
+          )}
+        </View>
+      </TouchableWithoutFeedback>
+      <StatusBar style="auto" />
+    </NavigationContainer>
   );
 }
 
@@ -77,6 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     fontFamily: "Roboto-Bold",
+    justifyContent: "flex-end",
   },
   bgImage: {
     flex: 1,
@@ -85,3 +121,26 @@ const styles = StyleSheet.create({
     // resizeMode: "center",
   },
 });
+
+{
+  /* <TouchableWithoutFeedback onPress={keyboardHide}>
+  <View style={styles.container} onLayout={onLayoutRootView}>
+    <AuthStack.Navigator initialRouteName={"Registration"}>
+      <AuthStack.Screen
+        options={{ headerShown: false }}
+        name="Registration"
+      >
+        {(props) => (
+          <RegistrationScren {...props} keyboardHide={keyboardHide} />
+        )}
+      </AuthStack.Screen>
+      <AuthStack.Screen options={{ headerShown: false }} name="Login">
+        {(props) => (
+          <LoginScreen {...props} keyboardHide={keyboardHide} />
+        )}
+      </AuthStack.Screen>
+    </AuthStack.Navigator>
+  </View>
+</TouchableWithoutFeedback>
+<StatusBar style="auto" /> */
+}
