@@ -5,24 +5,14 @@ import {
   TouchableWithoutFeedback,
   View,
   Keyboard,
-  Button,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { RegistrationScren } from "./Screens/auth/RegistrationScren";
-import { LoginScreen } from "./Screens/auth/LoginScreen";
-import { PostsScreen } from "./Screens/mainScreen/PostsScreen";
-import { CreatePostsScreen } from "./Screens/mainScreen/CreatePostsScreen";
-import { ProfileScreen } from "./Screens/mainScreen/ProfileScreen";
+import { getRoute } from "./assets/utilities/getRoute";
 
 SplashScreen.preventAutoHideAsync();
-
-const AuthStack = createNativeStackNavigator();
-const MainTab = createBottomTabNavigator();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -31,7 +21,7 @@ export default function App() {
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
     "Alkatra-Bold": require("./assets/fonts/Alkatra-Bold.ttf"),
   });
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [_, setIsShowKeyboard] = useState(false);
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
 
@@ -68,77 +58,7 @@ export default function App() {
     <NavigationContainer>
       <TouchableWithoutFeedback onPress={keyboardHide}>
         <View style={styles.container} onLayout={onLayoutRootView}>
-          {isAuth ? (
-            <MainTab.Navigator>
-              <MainTab.Screen
-                options={{
-                  title: "Posts",
-                  headerStyle: styles.headerScreen,
-                  headerTitleAlign: "center",
-                  headerRight: () => (
-                    <Button
-                      onPress={() => alert("This is a button!")}
-                      title="Press me"
-                      color="#000"
-                    />
-                  ),
-                }}
-                name="Posts"
-                component={PostsScreen}
-                // tabBar={(props) => <PostsScreen {...props} user={user} />}
-                initialParams={{ user }}
-              />
-              <MainTab.Screen
-                options={{
-                  title: "Create Posts",
-                  headerStyle: styles.headerScreen,
-                  headerTitleAlign: "center",
-                  headerRight: () => (
-                    <Button
-                      onPress={() => alert("This is a button!")}
-                      title="Press me"
-                      color="#000"
-                    />
-                  ),
-                }}
-                name="CreatePosts"
-                component={CreatePostsScreen}
-              />
-              <MainTab.Screen
-                options={{
-                  headerShown: false,
-                }}
-                name="Profile"
-                component={ProfileScreen}
-              />
-            </MainTab.Navigator>
-          ) : (
-            <AuthStack.Navigator initialRouteName={"Registration"}>
-              <AuthStack.Screen
-                options={{ headerShown: false }}
-                name="Registration"
-              >
-                {(props) => (
-                  <RegistrationScren
-                    {...props}
-                    keyboardHide={keyboardHide}
-                    setIsAuth={setIsAuth}
-                    setUser={setUser}
-                  />
-                )}
-              </AuthStack.Screen>
-              <AuthStack.Screen options={{ headerShown: false }} name="Login">
-                {(props) => (
-                  <LoginScreen
-                    {...props}
-                    keyboardHide={keyboardHide}
-                    setIsAuth={setIsAuth}
-                    setUser={setUser}
-                  />
-                )}
-              </AuthStack.Screen>
-            </AuthStack.Navigator>
-          )}
+          {getRoute(isAuth, user, keyboardHide, setIsAuth, setUser)}
         </View>
       </TouchableWithoutFeedback>
       <StatusBar style="auto" />
@@ -151,18 +71,5 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: "Roboto-Bold",
     justifyContent: "flex-end",
-  },
-  bgImage: {
-    flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  headerScreen: {
-    backgroundColor: "#FFFFFF",
-    borderBottomColor: "rgba(0, 0, 0, 0.3)",
-    borderBottomWidth: 0.5,
-
-    // textAlign: "center",
-    // alignItems: "center",
   },
 });
