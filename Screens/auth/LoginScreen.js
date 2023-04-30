@@ -21,7 +21,7 @@ const initialState = {
   password: "",
 };
 
-export const LoginScreen = ({ navigation, keyboardHide }) => {
+export const LoginScreen = ({ navigation, keyboardHide, setIsAuth }) => {
   const [credentials, setСredentials] = useState(initialState);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -32,6 +32,8 @@ export const LoginScreen = ({ navigation, keyboardHide }) => {
   const handleSubmit = () => {
     keyboardHide();
     console.log(credentials);
+    setIsAuth(true);
+    setUser(credentials);
     setСredentials(initialState);
   };
 
@@ -99,7 +101,6 @@ export const LoginScreen = ({ navigation, keyboardHide }) => {
               </View>
             </KeyboardAvoidingView>
 
-            {/* {!isShowKeyboard && ( */}
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.formButton}
@@ -107,10 +108,8 @@ export const LoginScreen = ({ navigation, keyboardHide }) => {
             >
               <Text style={styles.formButtonText}>LogIn</Text>
             </TouchableOpacity>
-            {/* )} */}
           </View>
 
-          {/* {!isShowKeyboard && ( */}
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.changeFormButton}
@@ -120,7 +119,6 @@ export const LoginScreen = ({ navigation, keyboardHide }) => {
               Don't have an account? Register
             </Text>
           </TouchableOpacity>
-          {/* )} */}
         </ScrollView>
       </View>
     </ImageBackground>
@@ -132,7 +130,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    // resizeMode: "center",
   },
   container: {
     position: "relative",

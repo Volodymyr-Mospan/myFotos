@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
   Keyboard,
+  Button,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -31,6 +32,7 @@ export default function App() {
     "Alkatra-Bold": require("./assets/fonts/Alkatra-Bold.ttf"),
   });
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
@@ -69,17 +71,43 @@ export default function App() {
           {isAuth ? (
             <MainTab.Navigator>
               <MainTab.Screen
-                options={{ headerShown: false }}
+                options={{
+                  title: "Posts",
+                  headerStyle: styles.headerScreen,
+                  headerTitleAlign: "center",
+                  headerRight: () => (
+                    <Button
+                      onPress={() => alert("This is a button!")}
+                      title="Press me"
+                      color="#000"
+                    />
+                  ),
+                }}
                 name="Posts"
                 component={PostsScreen}
+                // tabBar={(props) => <PostsScreen {...props} user={user} />}
+                initialParams={{ user }}
               />
               <MainTab.Screen
-                options={{ headerShown: false }}
+                options={{
+                  title: "Create Posts",
+                  headerStyle: styles.headerScreen,
+                  headerTitleAlign: "center",
+                  headerRight: () => (
+                    <Button
+                      onPress={() => alert("This is a button!")}
+                      title="Press me"
+                      color="#000"
+                    />
+                  ),
+                }}
                 name="CreatePosts"
                 component={CreatePostsScreen}
               />
               <MainTab.Screen
-                options={{ headerShown: false }}
+                options={{
+                  headerShown: false,
+                }}
                 name="Profile"
                 component={ProfileScreen}
               />
@@ -91,12 +119,22 @@ export default function App() {
                 name="Registration"
               >
                 {(props) => (
-                  <RegistrationScren {...props} keyboardHide={keyboardHide} />
+                  <RegistrationScren
+                    {...props}
+                    keyboardHide={keyboardHide}
+                    setIsAuth={setIsAuth}
+                    setUser={setUser}
+                  />
                 )}
               </AuthStack.Screen>
               <AuthStack.Screen options={{ headerShown: false }} name="Login">
                 {(props) => (
-                  <LoginScreen {...props} keyboardHide={keyboardHide} />
+                  <LoginScreen
+                    {...props}
+                    keyboardHide={keyboardHide}
+                    setIsAuth={setIsAuth}
+                    setUser={setUser}
+                  />
                 )}
               </AuthStack.Screen>
             </AuthStack.Navigator>
@@ -118,29 +156,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     alignItems: "center",
-    // resizeMode: "center",
+  },
+  headerScreen: {
+    backgroundColor: "#FFFFFF",
+    borderBottomColor: "rgba(0, 0, 0, 0.3)",
+    borderBottomWidth: 0.5,
+
+    // textAlign: "center",
+    // alignItems: "center",
   },
 });
-
-{
-  /* <TouchableWithoutFeedback onPress={keyboardHide}>
-  <View style={styles.container} onLayout={onLayoutRootView}>
-    <AuthStack.Navigator initialRouteName={"Registration"}>
-      <AuthStack.Screen
-        options={{ headerShown: false }}
-        name="Registration"
-      >
-        {(props) => (
-          <RegistrationScren {...props} keyboardHide={keyboardHide} />
-        )}
-      </AuthStack.Screen>
-      <AuthStack.Screen options={{ headerShown: false }} name="Login">
-        {(props) => (
-          <LoginScreen {...props} keyboardHide={keyboardHide} />
-        )}
-      </AuthStack.Screen>
-    </AuthStack.Navigator>
-  </View>
-</TouchableWithoutFeedback>
-<StatusBar style="auto" /> */
-}

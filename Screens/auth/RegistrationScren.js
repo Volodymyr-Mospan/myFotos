@@ -23,7 +23,12 @@ const initialState = {
   password: "",
 };
 
-export const RegistrationScren = ({ keyboardHide, navigation }) => {
+export const RegistrationScren = ({
+  keyboardHide,
+  navigation,
+  setIsAuth,
+  setUser,
+}) => {
   const [credentials, setСredentials] = useState(initialState);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -33,8 +38,10 @@ export const RegistrationScren = ({ keyboardHide, navigation }) => {
 
   const handleSubmit = () => {
     console.log(credentials);
-    setСredentials(initialState);
     keyboardHide();
+    setIsAuth(true);
+    setUser(credentials);
+    setСredentials(initialState);
   };
 
   return (
@@ -124,20 +131,17 @@ export const RegistrationScren = ({ keyboardHide, navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-            </KeyboardAvoidingView>
 
-            {/* {!isShowKeyboard && ( */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.formButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.formButtonText}>Register</Text>
-            </TouchableOpacity>
-            {/* )} */}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.formButton}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.formButtonText}>Register</Text>
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
           </View>
 
-          {/* {!isShowKeyboard && ( */}
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.changeFormButton}
@@ -147,7 +151,6 @@ export const RegistrationScren = ({ keyboardHide, navigation }) => {
               Already have an account? To come in
             </Text>
           </TouchableOpacity>
-          {/* )} */}
         </ScrollView>
       </View>
     </ImageBackground>
@@ -226,7 +229,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 16,
 
-    // textAlign: "center",
     verticalAlign: "middle",
 
     backgroundColor: "#F6F6F6",
